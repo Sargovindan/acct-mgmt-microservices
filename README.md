@@ -33,7 +33,9 @@ This command will build a docker image to your local registry and deploy it alon
 
 
 	npm install
+
 	ng build
+
     ng serve
 
 
