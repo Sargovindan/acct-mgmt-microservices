@@ -1,0 +1,55 @@
+<div style="width: 400px; margin: auto;">
+    <div class="submit-form">
+      <div *ngIf="!submitted">
+        <div class="form-group">
+          <label for="customerId">Customer Id</label>
+          <input
+            type="text"
+            class="form-control"
+            id="customerId"
+            required
+            [(ngModel)]="customerId"
+            name="customerId"
+          />
+        </div>
+  
+        <button (click)="getAccountTransactions()" class="btn btn-success">Submit</button>
+      </div>
+  
+      <div *ngIf="submitted">
+        <h4>You submitted successfully!</h4>
+        <button class="btn btn-success" (click)="newAccountDetailsRequest()">New Account Transaction Request</button>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <h4>Account Details</h4>
+    <div *ngIf="customerDetails">
+        <ul> Name: {{ customerDetails.firstname }} {{ customerDetails.surname }}</ul>
+    </div>
+    <div *ngIf="accountDetails">
+        <ul>Account Number: {{ accountDetails.accountNumber }}</ul>
+        <ul>Account Balance: {{ accountDetails.balance }}</ul>
+    </div>
+
+    <h4>Transactions</h4>
+    <table class="table">
+        <thead>
+          <tr>
+            <th>Amount</th>
+            <th>Transaction Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr  *ngFor="let transaction of accountTransactions">
+            <td>{{ transaction.amount }}</td>
+            <td>{{transaction.transactionDate | date:'medium'}}</td>
+            <td><span class="pointer text-danger"><i class="fas fa-trash-alt"></i></span></td>
+          </tr>
+        </tbody>
+  
+      </table>
+  </div>
+
+  
+  
