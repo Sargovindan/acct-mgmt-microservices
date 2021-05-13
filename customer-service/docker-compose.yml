@@ -1,0 +1,48 @@
+version: '3.7'
+networks:
+  service-network:
+    external: true
+volumes:
+  postgres-data:
+services:
+  customer-service:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: customer-service
+    restart: always
+    ports:
+      - "8180:8180"
+    env_file:
+      - .env
+    volumes:
+      - ./appconfigs/:/config/
+    networks:
+      - service-network
+    depends_on:
+      - customer-db
+    healthcheck:
+      test: curl -f http://localhost:8180/api/customers/check || exit 1
+      interval: 1m
+      timeout: 10s
+      retries: 10
+  customer-db:
+    image: postgres:alpine
+    container_name: customer-db
+    restart: always
+    # volumes:
+    #  - ./data:/var/lib/postgresql/data
+    networks:
+      - service-network
+    ports:
+      - "5434:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: cust_mgmt
+#      PGDATA: /var/lib/postgresql/data/pgdata
+    healthcheck:
+      test: pg_isready -U postgres
+      interval: 1m
+      timeout: 10s
+      retries: 10

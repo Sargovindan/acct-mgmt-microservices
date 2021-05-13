@@ -32,8 +32,9 @@ This command will build a docker image to your local registry and deploy it alon
 5. For the front end application, cd into the acct-mgmt-front-end folder and run the following commands sequentially
 
 
+	npm install
 	ng build
-	ng serve
+    ng serve
 
 
 6. We can then access the application using the url http://localhost:4200
