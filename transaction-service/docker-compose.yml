@@ -1,0 +1,48 @@
+version: '3.7'
+networks:
+  service-network:
+    external: true
+volumes:
+  postgres-data:
+services:
+  transaction-service:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: transaction-service
+    restart: always
+    ports:
+      - "8280:8280"
+    env_file:
+      - .env
+    volumes:
+      - ./appconfigs/:/config/
+    networks:
+      - service-network
+    depends_on:
+      - transaction-db
+    healthcheck:
+      test: curl -f http://localhost:8280/api/transactions/check || exit 1
+      interval: 1m
+      timeout: 10s
+      retries: 10
+  transaction-db:
+    image: postgres:alpine
+    container_name: transaction-db
+    restart: always
+    # volumes:
+    #  - ./data:/var/lib/postgresql/data
+    networks:
+      - service-network
+    ports:
+      - "5435:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: transaction_mgmt
+#      PGDATA: /var/lib/postgresql/data/pgdata
+    healthcheck:
+      test: pg_isready -U postgres
+      interval: 1m
+      timeout: 10s
+      retries: 10

@@ -1,0 +1,48 @@
+spring:
+  profiles: development
+    #active: development
+ # Database
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: ${POSTGRES_DB}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASS}
+  jpa:
+    hibernate:
+      ddl-auto: create
+      generate-ddl: true
+    show-sql: true
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    open-in-view: false
+logging:
+  pattern:
+    console: "%d %-5level %logger : %msg%n"
+  level:
+    org.springframework: error
+    org.hibernate: error
+server:
+  port: 8280
+  servlet:
+    context-path: /
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /v3/api-docs.yaml
+external-service:
+  customer-url: ${CUSTOMER_APP_URL}
+  transaction-url: ${TRANSACTION_APP_URL}
+cors:
+  url-allowed: ${FRONTEND_APP_URL}
+---
+spring:
+  profiles: test
+     #active: test
+  datasource:
+    url: jdbc:h2:mem:test
+external-service:
+  customer-url: http://localhost:8180/api/customers
+  transaction-url: http://localhost:8180/api/transactions
+cors:
+  url-allowed: http://localhost:4200
