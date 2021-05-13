@@ -1,0 +1,37 @@
+<div style="width: 400px; margin: auto;">
+    <div class="submit-form">
+      <div *ngIf="!submitted">
+        <div class="form-group">
+          <label for="customerId">Customer Id</label>
+          <input
+            type="text"
+            class="form-control"
+            id="customerId"
+            required
+            [(ngModel)]="account.customerId"
+            name="customerId"
+          />
+        </div>
+  
+        <div class="form-group">
+          <label for="initialCredit">Inital Credit</label>
+          <input
+            class="form-control"
+            id="initialCredit"
+            required
+            [(ngModel)]="account.initialCredit"
+            name="initialCredit"
+          />
+        </div>
+  
+        <button (click)="addAccount()" class="btn btn-success">Submit</button>
+      </div>
+  
+      <div *ngIf="submitted">
+        <h4>You submitted successfully!</h4>
+        <button class="btn btn-success" (click)="newAccount()">Add New Account</button>
+      </div>
+    </div>
+  </div>
+  
+  

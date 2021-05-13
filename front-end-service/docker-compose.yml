@@ -1,0 +1,19 @@
+version: '3.7'
+networks:
+   service-network:
+     external: true
+services:
+  front-end:
+    container_name: frontend
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - '.:/app'
+      - '/app/node_modules'
+    ports:
+      - '4202:4200'
+    env_file:
+      - .env
+    networks:
+      - service-network
